@@ -25,8 +25,7 @@ class MultiTaskBase:
 
             task_json, potential_object = cls.get_object(potential_object, 0)
             if task_json:
-                obj = cls.task_type.model_validate_json(task_json)  # type: ignore
-                yield obj
+                yield cls.task_type.model_validate_json(task_json)
 
     @staticmethod
     def extract_json(completion):
@@ -42,7 +41,7 @@ class MultiTaskBase:
         for i, c in enumerate(str):
             if c == "{":
                 stack += 1
-            if c == "}":
+            elif c == "}":
                 stack -= 1
                 if stack == 0:
                     return str[: i + 1], str[i + 2 :]
